@@ -1,0 +1,52 @@
+[tool.poetry]
+name = "proman_github"
+version = "0.1.0"
+description = "GitHub based package manager."
+authors = ["Jesse P. Johnson <jpj6652@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+flake8 = "^3.8.3"
+pydocstyle = "^5.0.2"
+docstr-coverage = "^1.2.0"
+pytest-cov = "^2.10.0"
+isort = "^4.3.21"
+bandit = "^1.6.2"
+safety = "^1.9.0"
+mkdocs = "^1.1.2"
+bump2version = "^1.0.0"
+invoke = "^1.4.1"
+mkdocs-material = "^5.4.0"
+mkdocstrings = "^0.13.2"
+flit = "^3.1.0"
+
+[tool.flit.metadata]
+module = "proman_github"
+author = "Jesse P. Johnson"
+author-email = "jpj6652@gmail.com"
+home-page = "https://github.com/kuwv/pkgmgr-github"
+requires = []
+
+classifiers = ["License :: OSI Approved :: Apache Software License"]
+
+[tool.flit.scripts]
+pkg = "proman_github:program.run"
+
+[tool.black]
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+    | \.git
+    | \.mypy_cache
+    | \.pytest_cache
+    | \.vagrant
+    | _build
+    | dist
+  )
+)
+'''
