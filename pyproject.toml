@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "proman_github"
+name = "proman-github"
 version = "0.1.0"
 description = "GitHub based package manager."
 authors = ["Jesse P. Johnson <jpj6652@gmail.com>"]
@@ -24,16 +24,16 @@ mkdocstrings = "^0.13.2"
 flit = "^3.1.0"
 
 [tool.flit.metadata]
-module = "proman_github"
+module = "github"
 author = "Jesse P. Johnson"
 author-email = "jpj6652@gmail.com"
-home-page = "https://github.com/kuwv/pkgmgr-github"
+home-page = "https://github.com/python-proman/proman-github"
 requires = []
 
 classifiers = ["License :: OSI Approved :: Apache Software License"]
 
 [tool.flit.scripts]
-pkg = "proman_github:program.run"
+pkg = "github:program.run"
 
 [tool.black]
 include = '\.pyi?$'

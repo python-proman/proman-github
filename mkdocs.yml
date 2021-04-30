@@ -1,8 +1,8 @@
 ---
-site_name: pkgmgr-github
+site_name: proman-github
 site_author: Jesse P. Johnson
 copyright: copywright (c) 2020 by Jesse P. Johnson.
-repo_url: https://github.com/kuwv/pkgmgr-github
+repo_url: https://github.com/kuwv/proman-github
 
 theme:
   name: material

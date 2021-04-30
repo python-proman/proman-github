@@ -11,7 +11,7 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 # package metadata
 __author__ = 'Jesse P. Johnson'
-__title__ = 'proman_github'
+__title__ = 'github'
 __version__ = '0.1.0'
 __license__ = 'MPL-2.0'
 __all__ = []

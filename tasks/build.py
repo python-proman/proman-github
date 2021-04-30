@@ -5,7 +5,7 @@
 
 from invoke import call, task
 
-from proman_github import __version__
+from github import __version__
 
 if 'dev' in __version__ or 'rc' in __version__:
     part = 'build'
@@ -71,6 +71,6 @@ def clean(ctx):  # type: ignore
     paths = ['dist', 'logs']
     paths.append('**/__pycache__')
     paths.append('**/*.pyc')
-    paths.append('proman_github.egg-info')
+    paths.append('github.egg-info')
     for path in paths:
         ctx.run("rm -rf {}".format(path))
