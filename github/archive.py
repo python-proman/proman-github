@@ -12,22 +12,24 @@ import tarfile
 
 
 class Archive:
-    def __init__(self):
+    '''Manage artifact packaging.'''
+
+    def __init__(self) -> None:
         '''Initialize archive.'''
         pass
 
-    def _unpack_gzip(self, path):
+    def _unpack_gzip(self, path: str) -> None:
         with open(path, 'rb') as p:
             gzip.decompress(p.read())
 
-    def _unpack_zipfile(self, path):
+    def _unpack_zipfile(self, path: str) -> None:
         pass
 
-    def pack(self, path):
+    def pack(self, path: str) -> None:
         '''Pack archive.'''
         pass
 
-    def unpack(self, path, dest='.'):
+    def unpack(self, path: str, dest: str = '.') -> None:
         '''Unpack archive.'''
         mt = mimetypes.guess_type(path)
         if mt[0] == 'application/gzip':

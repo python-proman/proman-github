@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-# type: ignore
 # copyright: (c) 2020 by Jesse Johnson.
 # license: MPL 2.0, see LICENSE for more details.
-'''Configurations for Task-Runners.'''
+'''Configuration for package manager.'''
 
 import os
 import platform

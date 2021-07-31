@@ -7,9 +7,10 @@ import json
 import os
 import shutil
 from tempfile import TemporaryDirectory
+from typing import Any, Dict, List, Optional
 from urllib.request import Request, urlopen
 
-from invoke import Collection, task
+from invoke import Collection, Context, task
 
 from . import config
 # from . import filesystem
@@ -36,17 +37,17 @@ from .archive import Archive
 #     executable: sops
 
 
-def __get_releases():
+def __get_releases() -> str:
     pass
 
 
 def __get_asset(
-    assets,
-    archive=None,
-    platform=config.system_type,
-    arch=None,
-    suffix=None,
-):
+    assets: List[Dict[str, Any]],
+    archive: Optional[str] = None,
+    platform: str = config.system_type,
+    arch: Optional[str] = None,
+    suffix: Optional[str] = None,
+) -> Optional[str]:
     '''Get archive for platform or architecture.'''
     # print(json.dumps(assets, sort_keys=True, indent=2))
     names = [x['name'] for x in assets]
@@ -64,7 +65,7 @@ def __get_asset(
     return None
 
 
-def get_release_metadata(url):
+def get_release_metadata(url: str) -> Dict[str, Any]:
     '''Get release metadata.'''
     # TODO: need to allow for specific versions
     with urlopen(url) as connection:
@@ -72,26 +73,26 @@ def get_release_metadata(url):
         return json.loads(response)
 
 
-def download_package(url, dest):
+def download_package(url: str, dest: str) -> None:
     '''Download package.'''
     # TODO: need to allow for specific versions
-    url = Request(
+    request = Request(
         url, headers={'Accept': 'application/octet-stream'}
     )
-    with urlopen(url) as response:
+    with urlopen(request) as response:
         data = response.read()
         with open(dest, 'wb') as f:
             f.write(data)
 
 
-def unpack_archive(path, dest):
+def unpack_archive(path: str, dest: str) -> None:
     '''Unpack tarball.'''
     archive = Archive()
     archive.unpack(path, dest)
 
 
-def move_files():
-    '''Moved files to location.'''
+def move_files() -> None:
+    '''Move files to location.'''
     # - name: Move executable
     #   copy:
     #     src: "/tmp/{{ item.executable | d(item.archive) }}"
@@ -101,7 +102,7 @@ def move_files():
     pass
 
 
-def rename_executable(path):
+def rename_executable(path: str) -> None:
     '''Rename executable.'''
     #     - archive_type.stat['mimetype'] == 'application/x-executable'
     #     - item.executable is defined
@@ -115,15 +116,15 @@ def rename_executable(path):
 
 @task
 def install(
-    ctx,
-    owner=None,
-    repo=None,
-    version='latest',
-    url=None,
-    filename=None,
-    new_filename=None,
-    file_pattern=f"*{config.system_type}*"
-):
+    ctx,  # type: Context
+    owner=None,  # type: Optional[str]
+    repo=None,  # type: Optional[str]
+    version='latest',  # type: str
+    url=None,  # type: Optional[str]
+    filename=None,  # type: Optional[str]
+    new_filename=None,  # type: Optional[str]
+    file_pattern=f"*{config.system_type}*"  # type: str
+):  # type: (...) -> None
     '''Install GitHub release.'''
     try:
         url = Request(
@@ -185,14 +186,14 @@ def install(
         print(f"unable to download github release due to: {err}")
 
 
-@task
-def uninstall(ctx, name):
+def uninstall(ctx, name):  # type: (Context, str) -> None
     '''Uninstall GitHub release.'''
     pass
 
 
-@task
-def search(ctx, owner=None, repo=None):
+def search(
+    ctx, owner=None, repo=None
+):  # type: (Context, Optional[str], Optional[str]) -> None
     '''Search for packages.'''
     pass
 

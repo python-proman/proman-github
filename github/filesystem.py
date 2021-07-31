@@ -21,7 +21,7 @@ def mkdir(ctx, path):
 
 @task
 def rmdir(ctx, path):
-    ''''Remove directory path.'''
+    '''Remove directory path.'''
     try:
         shutil.rmtree(path)
     except OSError as err:
