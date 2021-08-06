@@ -3,9 +3,10 @@
 # license: Apache 2.0, see LICENSE for more details.
 '''Test Task-Runner.'''
 
-from invoke import call, task
+from typing import Optional
+from invoke import Context, call, task  # type: ignore
 
-from github import __version__
+from proman_github import __version__
 
 if 'dev' in __version__ or 'rc' in __version__:
     part = 'build'
@@ -14,7 +15,7 @@ else:
 
 
 @task
-def build(ctx, format=None):  # type: ignore
+def build(ctx, format=None):  # type: (Context, Optional[str]) -> None
     '''Build wheel package.'''
     if format:
         ctx.run("flit build --format={}".format(format))
@@ -23,13 +24,15 @@ def build(ctx, format=None):  # type: ignore
 
 
 @task(pre=[call(build, format='wheel')])
-def dev(ctx):
+def dev(ctx):  # (Context) -> None
     '''Perform development runtime environment setup.'''
     ctx.run('flit install --symlink --python python3')
 
 
 @task
-def install(ctx, symlink=True, dev=False):  # type: ignore
+def install(
+    ctx, symlink=True, dev=False
+):  # type: (Context, bool, bool) -> None
     '''Install within environment.'''
     args = []
     if symlink:
@@ -40,9 +43,9 @@ def install(ctx, symlink=True, dev=False):  # type: ignore
 
 
 @task
-def version(  # type: ignore
+def version(
     ctx, part=part, tag=False, commit=False, message=None
-):
+):  # type: (Context, str, bool, bool, Optional[str]) -> None
     '''Update project version and apply tags.'''
     args = [part]
     if tag:
@@ -60,17 +63,17 @@ def version(  # type: ignore
 
 
 @task
-def publish(ctx):  # type: ignore
+def publish(ctx):  # type: (Context) -> None
     '''Publish project distribution.'''
     ctx.run('flit publish')
 
 
 @task
-def clean(ctx):  # type: ignore
+def clean(ctx):  # type: (Context) -> None
     '''Clean project dependencies and build.'''
     paths = ['dist', 'logs']
     paths.append('**/__pycache__')
     paths.append('**/*.pyc')
-    paths.append('github.egg-info')
+    paths.append('proman_github.egg-info')
     for path in paths:
         ctx.run("rm -rf {}".format(path))
