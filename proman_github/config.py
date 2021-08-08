@@ -39,13 +39,13 @@ class Manifest:
         lockfile: 'LockFile',
     ) -> None:
         '''Initialize project manifest.'''
-        self.__source_tree = source_tree
-        self.__lockfile = lockfile
+        self.source_tree = source_tree
+        self.lockfile = lockfile
 
     def save(self) -> None:
         '''Save each configuration.'''
-        self.__source_tree.save()
-        self.__lockfile.save()
+        self.source_tree.save()
+        self.lockfile.save()
 
     def add_dependency(
         self,
@@ -55,28 +55,28 @@ class Manifest:
         **kwargs: Any,
     ) -> None:
         '''Add dependency to configuration.'''
-        print(self.__source_tree.is_dependency(name, dev))
-        if self.__source_tree.is_dependency(name, dev):
-            dependency = self.__source_tree.get_dependency(name, dev)
+        print(self.source_tree.is_dependency(name, dev))
+        if self.source_tree.is_dependency(name, dev):
+            dependency = self.source_tree.get_dependency(name, dev)
             print('package:', dependency)
         else:
-            self.__source_tree.add_dependency(name, version, dev)
+            self.source_tree.add_dependency(name, version, dev)
 
-        if self.__lockfile.is_locked(name, dev):
-            locked = self.__lockfile.get_lock(name, dev)
+        if self.lockfile.is_locked(name, dev):
+            locked = self.lockfile.get_lock(name, dev)
             print('package locked:', locked)
         else:
-            self.__lockfile.add_lock(name, version, dev, **kwargs)
+            self.lockfile.add_lock(name, version, dev, **kwargs)
         self.save()
 
     def remove_dependency(self, name: str, dev: bool = False) -> None:
         '''Remove dependency from configuration.'''
-        if self.__source_tree.is_dependency(name, dev):
-            self.__source_tree.remove_dependency(name, dev)
+        if self.source_tree.is_dependency(name, dev):
+            self.source_tree.remove_dependency(name, dev)
         else:
             print('package is not tracked:', name)
-        if self.__lockfile.is_locked(name, dev):
-            self.__lockfile.remove_lock(name, dev)
+        if self.lockfile.is_locked(name, dev):
+            self.lockfile.remove_lock(name, dev)
         else:
             print('lock is not locked:', name)
         self.save()

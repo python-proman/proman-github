@@ -10,4 +10,8 @@ GitHub based package manager.
 
 ## Install
 
-`pip install proman-github`
+`pip install --user proman-github`
+
+## Install a release from GitHub
+
+`gh install mozilla/sops`

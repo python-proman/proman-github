@@ -164,20 +164,54 @@ class PackageManager(PackageManagerBase):
             # TODO: iterate source tree for install
             raise Exception('no release found')
 
-    def __remove_paths(self, path: str) -> None:
+    def __remove_path(self, path: str) -> None:
         '''Remove package directory from path.'''
         try:
-            shutil.rmtree(path)
+            if os.path.isdir(path):
+                shutil.rmtree(path)
+            elif os.path.isfile(path):
+                os.remove(path)
         except OSError as err:
             print(f"unable to delete direcotry path due to: {err}")
 
-    def uninstall(self, name: Optional[str], force: bool = False) -> None:
-        '''Perform package uninstall.'''
-        pass
+    def __uninstall_executable(self, executable: str) -> None:
+        '''Uninstall executable.'''
+        executable_path = os.path.join(self.__dirs.executable_dir, executable)
+        if os.path.exists(executable_path):
+            self.__remove_path(executable_path)
+        else:
+            print('already uninstalled:', executable)
 
-    def update(self, name: Optional[str], force: bool = False) -> None:
+    def uninstall(
+        self,
+        name: Optional[str],
+        dev: bool = False,
+        force: bool = False
+    ) -> None:
+        '''Perform package uninstall.'''
+        # TODO: janky stop-gap
+        if self.__manifest:
+            if name:
+                self.__manifest.remove_dependency(name, dev)
+                self.__uninstall_executable(executable=name.split('/')[1])
+            else:
+                print('prompt user to remove all dependencies unless force')
+
+    def update(
+        self,
+        name: Optional[str],
+        dev: bool = False,
+        force: bool = False
+    ) -> None:
         '''Update the package.'''
-        pass
+        # TODO: janky stop-gap
+        if self.__manifest:
+            if name:
+                self.uninstall(name, dev, force)
+                self.install(name, dev, version='latest')
+            else:
+                dependencies = self.__manifest.lockfile.get_locks()
+                print(dependencies)
 
     def search(
         self,

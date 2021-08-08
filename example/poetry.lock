@@ -697,7 +697,7 @@ dev = ["pre-commit", "tox"]
 
 [[package]]
 name = "proman-common"
-version = "0.1.1.dev9"
+version = "0.1.1.dev10"
 description = "GitHub based package manager."
 category = "main"
 optional = false
@@ -1531,8 +1531,8 @@ pluggy = [
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
 proman-common = [
-    {file = "proman_common-0.1.1.dev9-py3-none-any.whl", hash = "sha256:90bb11838fbd677522725f14176cd1c6153ca61eab588ef27d3374025852a475"},
-    {file = "proman_common-0.1.1.dev9.tar.gz", hash = "sha256:9301bd5d79bdd981f3d05a7d9851d0b9e64f9f8eda7140bd1c33634268b0feeb"},
+    {file = "proman_common-0.1.1.dev10-py3-none-any.whl", hash = "sha256:154a31f7310870bb60349e278c13b97b6e09a6b56f55a392e40dc80df9bb9ae3"},
+    {file = "proman_common-0.1.1.dev10.tar.gz", hash = "sha256:f4a4430d3057ceb8f2e71bf177db5fb4bfc7fc1622ad34eaf0f11a69d0f859a4"},
 ]
 py = [
     {file = "py-1.10.0-py2.py3-none-any.whl", hash = "sha256:3b80836aa6d1feeaa108e046da6423ab8f6ceda6468545ae8d02d9d58d18818a"},
