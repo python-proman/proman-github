@@ -9,9 +9,11 @@ import logging
 import sys
 from typing import Optional
 
-from . import local_package, package_manager
+from . import get_package_manager
 
 logger = logging.getLogger(__name__)
+
+package_manager = get_package_manager()
 
 
 def config() -> None:
@@ -19,21 +21,20 @@ def config() -> None:
     pass
 
 
-def info(name: str, output: str = None) -> None:
+def info(name: str, output: str = 'plain') -> None:
     '''Get package info.'''
-    info = package_manager.get_package_info(name)
+    info = package_manager.info(name, output)
     print(json.dumps(info, indent=2))
 
 
 def download(name: str, dest: str = '.') -> None:
     '''Download packages.'''
-    package_manager.download_package(name, dest)
+    package_manager.download(name, dest)
 
 
 def install(
     name: Optional[str],
     dev: bool = False,
-    python: Optional[str] = None,
     platform: Optional[str] = None,
     optional: bool = False,
     prerelease: bool = False,
@@ -46,8 +47,6 @@ def install(
         name of package to be installed
     dev: bool
         add package as a development dependency
-    python: str
-        version of Python allowed
     prerelease: bool
         allow prerelease version of package
     optional: bool
@@ -60,7 +59,11 @@ def install(
         print('error: not a valid install argument', file=sys.stderr)
     else:
         package_manager.install(
-            name, dev, python, platform, optional, prerelease
+            name,
+            dev,
+            platform=platform,
+            optional=optional,
+            prerelease=prerelease
         )
 
 
@@ -72,7 +75,7 @@ def uninstall(name: Optional[str]) -> None:
         package_manager.uninstall(name)
 
 
-def upgrade(
+def update(
     name: Optional[str],
     force: bool = False,
 ) -> None:
@@ -89,65 +92,31 @@ def upgrade(
     if name and name.startswith('-'):
         print('error: not a valid install argument', file=sys.stderr)
     else:
-        package_manager.upgrade(name, force)
+        package_manager.update(name, force)
 
 
-def list(versions: bool = True) -> None:
-    '''List installed packages.'''
-    if versions:
-        for k in local_package.packages:
-            print(k.name.ljust(25), k.version.ljust(15), file=sys.stdout)
-    else:
-        print('\n'.join(local_package.package_names), file=sys.stdout)
+# def list(versions: bool = True) -> None:
+#     '''List installed packages.'''
+#     if versions:
+#         for k in local_package.packages:
+#             print(k.name.ljust(25), k.version.ljust(15), file=sys.stdout)
+#     else:
+#         print('\n'.join(local_package.package_names), file=sys.stdout)
 
 
 def search(
-    name: str,
-    version: Optional[str] = None,
-    stable_version: Optional[str] = None,
-    author: Optional[str] = None,
-    author_email: Optional[str] = None,
-    maintainer: Optional[str] = None,
-    maintainer_email: Optional[str] = None,
-    home_page: Optional[str] = None,
-    terms: Optional[str] = None,
-    summary: Optional[str] = None,
-    description: Optional[str] = None,
-    keywords: Optional[str] = None,
-    platform: Optional[str] = None,
-    download_url: Optional[str] = None,
-    classifiers: Optional[str] = None,
-    project_url: Optional[str] = None,
-    docs_url: Optional[str] = None,
-    operation: Optional[str] = None,
+    query: str,
+    sort: str = 'stars',
+    order: str = 'desc',
 ) -> None:
     '''Search PyPI for packages.'''
     packages = package_manager.search(
-        query={
-            'name': name,
-            'version': version,
-            'stable_version': stable_version,
-            'author': author,
-            'author_email': author_email,
-            'maintainer': maintainer,
-            'maintainer_email': maintainer_email,
-            'home_page': home_page,
-            'license': terms,
-            'summary': summary,
-            'description': description,
-            'keywords': keywords,
-            'platform': platform,
-            'download_url': download_url,
-            'classifiers': classifiers,
-            'project_url': project_url,
-            'docs_url': docs_url,
-        },
-        operation=operation,
+        query=query,
+        sort=sort,
+        order=order,
     )
     for package in packages:
         print(
-            package['name'].ljust(25),
-            package['version'].ljust(15),
-            package['summary'],
+            package,
             file=sys.stdout
         )

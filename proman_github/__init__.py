@@ -34,31 +34,31 @@ def get_package_manager(
     '''Get package manager instance.'''
     # Load configuration files
     project_paths = ProjectPaths()
+    source_tree_file = None
+    lockfile = None
+
     if os.path.exists(project_paths.pyproject_path):
         source_tree_cfg = Config(
             filepath=project_paths.pyproject_path, writable=True
         )
-        print('writable', source_tree_cfg.writable)
         source_tree_file = SourceTreeFile(
-            source_tree_cfg, basepath='/tool/proman/github'
+            source_tree_cfg, basepath='.tool.proman.github'
         )
-        # local_distribution.create_pypackages_pth()
-        # local_distribution.load_pypackages()
 
-        if not os.path.exists(project_paths.lock_path):
+        if os.path.exists(project_paths.lock_path):
             lock_cfg = Config(filepath=project_paths.lock_path, writable=True)
-            lockfile = LockFile(lock_cfg, basepath='/github')
+            lockfile = LockFile(lock_cfg, basepath='.github')
         else:
-            print('err')
+            print('log no lockfile')
     else:
-        print('err')
+        print('log no source tree')
 
-    print(source_tree_cfg)
-
-    manifest: Manifest = Manifest(
-        source_tree=source_tree_file,
-        lockfile=lockfile,
-    )
+    manifest: Optional[Manifest] = None
+    if source_tree_file and lockfile:
+        manifest = Manifest(
+            source_tree=source_tree_file,
+            lockfile=lockfile,
+        )
 
     # Setup package manager
     return PackageManager(

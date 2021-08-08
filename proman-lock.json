@@ -1,0 +1,21 @@
+{
+  "github": {
+    "dependencies": [
+      {
+        "digests": [],
+        "name": "mozilla/sops",
+        "version": "meh"
+      },
+      {
+        "digests": [],
+        "name": "fluxcd/flux2",
+        "version": "meh"
+      },
+      {
+        "digests": [],
+        "name": "kubernetes-sigs/kustomize",
+        "version": "meh"
+      }
+    ]
+  }
+}

@@ -1,4 +1,4 @@
-'''Test download.'''
+'''Provide package manager capabilities using GitHub.'''
 import os
 import platform
 import shutil
@@ -16,9 +16,10 @@ from proman_common.filepaths import GlobalDirs
 from proman_github.archive import Archive
 
 if TYPE_CHECKING:
-    from github.GithubReleaseAsset import GithubReleaseAsset
-    from github.PaginatedList import PaginatedList
     from .config import Manifest
+    from github.GithubReleaseAsset import GithubReleaseAsset
+    from github.GitRelease import GitRelease
+    from github.PaginatedList import PaginatedList
 
 
 class PackageManager(PackageManagerBase):
@@ -38,6 +39,25 @@ class PackageManager(PackageManagerBase):
         self.__dirs = kwargs.get('dirs', GlobalDirs())
         self.__github = kwargs.get('github', Github())
         self.__archive = kwargs.get('archive', Archive())
+
+    def __get_release(
+        self,
+        name: str,
+        version: str = 'latest'
+    ) -> 'GitRelease':
+        '''Get project releases.'''
+        if version == 'latest':
+            release = self.__github.get_repo(name).get_latest_release()
+        else:
+            release = None
+            for x in self.__github.get_repo(name).get_releases():
+                if x.tag_name == version:
+                    release = x
+            if release:
+                release = self.__github\
+                    .get_repo(name)\
+                    .get_release(id=release.id)
+        return release
 
     def __get_asset(
         self,
@@ -113,33 +133,35 @@ class PackageManager(PackageManagerBase):
         **kwargs: Any,
     ) -> None:
         '''Install GitHub release.'''
-        owner = kwargs.get('owner', None)
-        project = kwargs.get('project', None)
         version = kwargs.get('version', 'latest')
         if name:
-            repository = name
-        elif owner and project:
-            repository = f"{owner}/{project}"
-        filename = kwargs.get('filename', project)
-        if not filename:
-            filename = repository.split('/')[1]
-        # file_pattern: str = f"*{config.system_type}*",
+            filename = kwargs.get('filename', None)
+            if not filename:
+                filename = name.split('/')[1]
 
-        assets = self.search(repository, version=version)
-        asset = self.__get_asset(assets)
+            release = self.__get_release(name, version=version)
+            asset = self.__get_asset(release.get_assets())
+            current = release.tag_name if version == 'latest' else version
 
-        if asset:
-            with TemporaryDirectory() as temp_dir:
-                filepath = os.path.join(temp_dir, asset.name)
-                self.download(asset.url, filepath)
-                self._install_asset(source_path=filepath, filename=filename)
-            if self.__manifest:
-                self.__manifest.add_dependency(
-                    name=repository,
-                    version='meh',
-                    dev=dev,
-                )
+            if asset:
+                with TemporaryDirectory() as temp_dir:
+                    filepath = os.path.join(temp_dir, asset.name)
+                    self.download(asset.url, filepath)
+                    self._install_asset(
+                        source_path=filepath, filename=filename
+                    )
+                if self.__manifest:
+                    self.__manifest.add_dependency(
+                        name=name,
+                        version=current,
+                        dev=dev,
+                        id=asset.id,
+                        url=asset.url,
+                        label=asset.label,
+
+                    )
         else:
+            # TODO: iterate source tree for install
             raise Exception('no release found')
 
     def __remove_paths(self, path: str) -> None:
@@ -149,23 +171,26 @@ class PackageManager(PackageManagerBase):
         except OSError as err:
             print(f"unable to delete direcotry path due to: {err}")
 
-    def uninstall(self, name: str, force: bool = False) -> None:
+    def uninstall(self, name: Optional[str], force: bool = False) -> None:
         '''Perform package uninstall.'''
         pass
 
-    def update(self, name: str, force: bool = False) -> None:
+    def update(self, name: Optional[str], force: bool = False) -> None:
         '''Update the package.'''
         pass
 
-    def search(self, name: str, **kwargs: Any) -> 'PaginatedList':
+    def search(
+        self,
+        query: str,
+        sort: str = 'stars',
+        order: str = 'desc',
+        **kwargs: Any
+    ) -> 'PaginatedList':
         '''Perform package search.'''
-        version = kwargs.get('version', 'latest')
-        if version == 'latest':
-            assets = gh.get_repo(name).get_latest_release().get_assets()
-        else:
-            # assets = gh.get_repo(name).get_latest(id='test').get_assets()
-            assets = gh.get_repo(name).get_latest_release().get_assets()
-        return assets
+        result = self.__github.search_repositories(
+            query, sort, order, **kwargs
+        )
+        return result
 
     def info(self, name: str, output: str) -> Dict[str, Any]:
         '''Retrieve package information.'''
@@ -183,45 +208,3 @@ class PackageManager(PackageManagerBase):
                     f.write(data)
         except OSError as err:
             print(f"unable to download github release due to: {err}")
-
-    def __get_releases(self) -> str:
-        pass
-
-
-token = os.getenv('GITHUB_TOKEN')
-gh = Github(token)
-global_dirs = GlobalDirs()
-
-# download = gh.get_repo("PyGithub").get_download(242550)
-
-headers = {
-    'Authorization': f"token {token}",
-    'Accept': 'application/octet-stream'
-}
-
-pkgmgr = PackageManager(github=gh, dirs=global_dirs)
-
-assets = pkgmgr.search('mozilla/sops')
-pkgmgr.install('mozilla/sops')
-pkgmgr.install('fluxcd/flux2')
-pkgmgr.install('kubernetes-sigs/kustomize')
-
-# archives:
-#   - owner: fluxcd
-#     repo: flux2
-#     tag: v0.7.3
-#     archive: flux_0.7.3_linux_amd64.tar.gz
-#     executable: flux
-#   - owner: kubernetes-sigs
-#     repo: kustomize
-#     tag: kustomize/v3.9.2
-#     archive: kustomize_v3.9.2_linux_amd64.tar.gz
-#     executable: kustomize
-#   - owner: mozilla
-#     repo: sops
-#     tag: v3.6.1
-#     archive: sops-v3.6.1.linux
-#     executable: sops
-#   - url: https://api.github.com/repos/octocat/hello-world/releases
-#   - url: https://dl.k8s.io/release/v1.20.2/bin/linux/amd64/kubectl
-#     archive: kubectl

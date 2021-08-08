@@ -55,6 +55,7 @@ class Manifest:
         **kwargs: Any,
     ) -> None:
         '''Add dependency to configuration.'''
+        print(self.__source_tree.is_dependency(name, dev))
         if self.__source_tree.is_dependency(name, dev):
             dependency = self.__source_tree.get_dependency(name, dev)
             print('package:', dependency)
@@ -65,7 +66,7 @@ class Manifest:
             locked = self.__lockfile.get_lock(name, dev)
             print('package locked:', locked)
         else:
-            self.__lockfile.add_lock(name, version, dev)
+            self.__lockfile.add_lock(name, version, dev, **kwargs)
         self.save()
 
     def remove_dependency(self, name: str, dev: bool = False) -> None:

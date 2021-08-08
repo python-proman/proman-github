@@ -40,7 +40,8 @@ requires = []
 classifiers = ["License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"]
 
 [tool.flit.scripts]
-ghpkg = "proman_github:__main__.main"
+github = "proman_github:__main__.main"
+gh = "proman_github:__main__.main"
 
 [tool.isort]
 profile = "black"

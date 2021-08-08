@@ -1,0 +1,14 @@
+{
+  "github": {
+    "dependencies": [
+      {
+        "digests": [],
+        "id": 34674569,
+        "label": "",
+        "name": "mozilla/sops",
+        "url": "https://api.github.com/repos/mozilla/sops/releases/assets/34674569",
+        "version": "v3.7.1"
+      }
+    ]
+  }
+}
