@@ -8,7 +8,7 @@ from urllib.request import Request, urlopen
 
 import magic
 from github import Github
-from proman_common.bases import PackageManagerBase
+from proman_common.packaging_bases import PackageManagerBase
 from proman_common.filepaths import GlobalDirs
 
 # from proman_github import config

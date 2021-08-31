@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
 # license: MPL-2.0, see LICENSE for more details.
-'''Simple package manager for Python.'''
+'''Simple package manager for GitHub releases.'''
 
 from argufy import Parser
 
