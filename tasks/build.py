@@ -3,12 +3,20 @@
 # license: Apache 2.0, see LICENSE for more details.
 '''Test Task-Runner.'''
 
-from typing import Optional
-from invoke import Context, call, task  # type: ignore
+from typing import Optional, TYPE_CHECKING
+from invoke import call, task
 
 from proman_github import __version__
 
-if 'dev' in __version__ or 'rc' in __version__:
+if TYPE_CHECKING:
+    from invoke import Context
+
+if (
+    'dev' in __version__
+    or 'a' in __version__
+    or 'b' in __version__
+    or 'rc' in __version__
+):
     part = 'build'
 else:
     part = 'patch'
@@ -24,7 +32,7 @@ def build(ctx, format=None):  # type: (Context, Optional[str]) -> None
 
 
 @task(pre=[call(build, format='wheel')])
-def dev(ctx):  # (Context) -> None
+def dev(ctx):  # type: (Context) -> None
     '''Perform development runtime environment setup.'''
     ctx.run('flit install --symlink --python python3')
 
@@ -44,12 +52,14 @@ def install(
 
 @task
 def version(
-    ctx, part=part, tag=False, commit=False, message=None
+    ctx,
+    part=part,
+    tag=False,
+    commit=False,
+    message=None,
 ):  # type: (Context, str, bool, bool, Optional[str]) -> None
     '''Update project version and apply tags.'''
     args = [part]
-    if tag:
-        args.append('--tag')
     if commit:
         args.append('--commit')
     else:
@@ -57,9 +67,11 @@ def version(
         args.append('--allow-dirty')
         args.append('--verbose')
         print('Add "--commit" to actually bump the version.')
-    if message:
-        args.append("--tag-message '{}'".format(message))
-    ctx.run("bumpversion {}".format(' '.join(args)))
+    if tag or message:
+        args.append('--tag')
+        if message:
+            args.append(f"--tag-message '{message}'")
+    ctx.run(f"bumpversion {' '.join(args)}")
 
 
 @task

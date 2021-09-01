@@ -1,12 +1,4 @@
 [[package]]
-name = "ansicolors"
-version = "1.1.8"
-description = "ANSI colors for Python"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "anytree"
 version = "2.8.0"
 description = "Powerful and Lightweight Python Tree Data Structure.."
@@ -30,42 +22,14 @@ optional = false
 python-versions = "*"
 
 [[package]]
-name = "argcomplete"
-version = "1.12.3"
-description = "Bash tab completion for argparse"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-importlib-metadata = {version = ">=0.23,<5", markers = "python_version == \"3.6\" or python_version == \"3.7\""}
-
-[package.extras]
-test = ["coverage", "flake8", "pexpect", "wheel"]
-
-[[package]]
-name = "argparse-color-formatter"
-version = "1.2.2.post2"
-description = "a `formatter_class` for `argparse` that deals with ANSI colour escapes. Specifically, this formatter does not count escape characters as displayed characters when wrapping `argparse`'s help text into the terminal."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-ansicolors = ">=1.1.8,<2.0.0"
-six = ">=1.11.0,<2.0.0"
-
-[[package]]
 name = "argufy"
-version = "0.1.2.dev1"
+version = "0.1.2a3"
 description = "Inspection based parser based on argparse."
 category = "main"
 optional = false
 python-versions = ">=3.6,<4.0"
 
 [package.dependencies]
-argcomplete = ">=1.12.2,<2.0.0"
-argparse_color_formatter = ">=1.2.2,<2.0.0"
 colorama = ">=0.4.4,<0.5.0"
 docstring-parser = ">=0.7.2,<0.8.0"
 
@@ -1148,10 +1112,6 @@ python-versions = "^3.6.2"
 content-hash = "29dafeaddae38eeaaa9fdc0d5ebaeb7812bfd328cd2e74803c8e5ec5381f44b1"
 
 [metadata.files]
-ansicolors = [
-    {file = "ansicolors-1.1.8-py2.py3-none-any.whl", hash = "sha256:00d2dde5a675579325902536738dd27e4fac1fd68f773fe36c21044eb559e187"},
-    {file = "ansicolors-1.1.8.zip", hash = "sha256:99f94f5e3348a0bcd43c82e5fc4414013ccc19d70bd939ad71e0133ce9c372e0"},
-]
 anytree = [
     {file = "anytree-2.8.0-py2.py3-none-any.whl", hash = "sha256:14c55ac77492b11532395049a03b773d14c7e30b22aa012e337b1e983de31521"},
     {file = "anytree-2.8.0.tar.gz", hash = "sha256:3f0f93f355a91bc3e6245319bf4c1d50e3416cc7a35cc1133c1ff38306bbccab"},
@@ -1160,17 +1120,9 @@ appdirs = [
     {file = "appdirs-1.4.4-py2.py3-none-any.whl", hash = "sha256:a841dacd6b99318a741b166adb07e19ee71a274450e68237b4650ca1055ab128"},
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
 ]
-argcomplete = [
-    {file = "argcomplete-1.12.3-py2.py3-none-any.whl", hash = "sha256:291f0beca7fd49ce285d2f10e4c1c77e9460cf823eef2de54df0c0fec88b0d81"},
-    {file = "argcomplete-1.12.3.tar.gz", hash = "sha256:2c7dbffd8c045ea534921e63b0be6fe65e88599990d8dc408ac8c542b72a5445"},
-]
-argparse-color-formatter = [
-    {file = "argparse-color-formatter-1.2.2.post2.tar.gz", hash = "sha256:781791135ad00e5682b970933130786da2b3e0a6dd1c1134e298f3e956479505"},
-    {file = "argparse_color_formatter-1.2.2.post2-py3-none-any.whl", hash = "sha256:9861f2aac9ee8c6154d8486c3d6e9c500ebaea6dd89fdca0dbb2612a6ba184b3"},
-]
 argufy = [
-    {file = "argufy-0.1.2.dev1-py3-none-any.whl", hash = "sha256:313e4c740a92029e677b9c359314e116755f64456dfd5a938d7dd93a87634f01"},
-    {file = "argufy-0.1.2.dev1.tar.gz", hash = "sha256:0b4b97ea378dc339f6eb179eb94d2f2ab809c9d57b08a0de32d5ed0b481ccc25"},
+    {file = "argufy-0.1.2a3-py3-none-any.whl", hash = "sha256:640c9b6afcf0a6314dc93a4abcef77b281dd622e0326bd4589ef41dd37cd40b4"},
+    {file = "argufy-0.1.2a3.tar.gz", hash = "sha256:4a1bdad92198d227ff59b3cb5d32f81441a990cbf29876647ea7becfee1a091e"},
 ]
 astunparse = [
     {file = "astunparse-1.6.3-py2.py3-none-any.whl", hash = "sha256:c2652417f2c8b5bb325c885ae329bdf3f86424075c4fd1a128674bc6fba4b8e8"},
