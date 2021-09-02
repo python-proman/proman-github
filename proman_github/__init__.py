@@ -22,7 +22,7 @@ from .package_manager import PackageManager
 # package metadata
 __author__ = 'Jesse P. Johnson'
 __title__ = 'proman-github'
-__version__ = '0.1.1-dev0'
+__version__ = '0.1.1-dev1'
 __license__ = 'MPL-2.0'
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
