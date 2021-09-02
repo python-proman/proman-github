@@ -12,10 +12,10 @@ from typing import List, Optional
 from github import Github
 from proman_common.config import Config
 from proman_common.filepaths import GlobalDirs
-from proman_common.manifest import LockFile, SourceTreeFile
+from proman_common.manifest import LockFile, SourceTreeFile, Manifest
 # from proman_common.system import System
 
-from .config import ProjectPaths, Manifest
+from .config import ProjectPaths
 # from .distributions import LocalDistributionPath, UserDistributionPath
 from .package_manager import PackageManager
 
@@ -58,6 +58,10 @@ def get_package_manager(
         manifest = Manifest(
             source_tree=source_tree_file,
             lockfile=lockfile,
+            dependency_class={
+                'module': 'proman_github.dependency',
+                'class': 'Dependency',
+            }
         )
 
     # Setup package manager

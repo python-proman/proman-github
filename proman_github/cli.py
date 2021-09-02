@@ -7,11 +7,11 @@
 import json
 import logging
 import sys
-from typing import Optional
+from typing import Any
 
 from . import get_package_manager
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__package__)
 
 package_manager = get_package_manager()
 
@@ -21,30 +21,26 @@ def config() -> None:
     pass
 
 
-def info(name: str, output: str = 'plain') -> None:
+def info(package: str, output: str = 'plain') -> None:
     '''Get package info.'''
-    info = package_manager.info(name, output)
+    info = package_manager.info(package, output)
     print(json.dumps(info, indent=2))
 
 
-def download(name: str, dest: str = '.') -> None:
-    '''Download packages.'''
-    package_manager.download(name, dest)
-
-
-def install(
-    name: Optional[str],
-    dev: bool = False,
-    platform: Optional[str] = None,
-    optional: bool = False,
-    prerelease: bool = False,
+def download(
+    package: str, dest: str = '.', version: str = 'latest'
 ) -> None:
+    '''Download packages.'''
+    package_manager.download(package, dest, version=version)
+
+
+def install(*packages: str, **options: Any) -> None:
     '''Install package and dependencies.
 
     Parameters
     ----------
-    name: str
-        name of package to be installed
+    package: str
+        package of package to be installed
     dev: bool
         add package as a development dependency
     prerelease: bool
@@ -55,60 +51,38 @@ def install(
         restrict package to specific platform
 
     '''
-    if name and name.startswith('-'):
-        print('error: not a valid install argument', file=sys.stderr)
-    else:
-        package_manager.install(
-            name,
-            dev,
-            platform=platform,
-            optional=optional,
-            prerelease=prerelease
-        )
+    package_manager.install(*packages, **options)
 
 
-def uninstall(name: Optional[str]) -> None:
+def uninstall(*packages: str, **options: Any) -> None:
     '''Uninstall packages.'''
-    if name and name.startswith('-'):
-        print('error: not a valid install argument', file=sys.stderr)
-    else:
-        package_manager.uninstall(name)
+    package_manager.uninstall(*packages, **options)
 
 
-def update(
-    name: Optional[str],
-    force: bool = False,
-) -> None:
+def update(*packages: str, **options: Any) -> None:
     '''Install package and dependencies.
 
     Parameters
     ----------
-    name: str
-        name of package to be installed
+    package: str
+        package of package to be installed
     force: bool
         force changes
 
     '''
-    if name and name.startswith('-'):
-        print('error: not a valid install argument', file=sys.stderr)
-    else:
-        package_manager.update(name, force)
+    package_manager.update(*packages, **options)
 
 
 # def list(versions: bool = True) -> None:
 #     '''List installed packages.'''
 #     if versions:
 #         for k in local_package.packages:
-#             print(k.name.ljust(25), k.version.ljust(15), file=sys.stdout)
+#             print(k.package.ljust(25), k.version.ljust(15), file=sys.stdout)
 #     else:
-#         print('\n'.join(local_package.package_names), file=sys.stdout)
+#         print('\n'.join(local_package.package_packages), file=sys.stdout)
 
 
-def search(
-    query: str,
-    sort: str = 'stars',
-    order: str = 'desc',
-) -> None:
+def search(query: str, sort: str = 'stars', order: str = 'desc') -> None:
     '''Search PyPI for packages.'''
     packages = package_manager.search(
         query=query,

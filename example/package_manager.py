@@ -1,4 +1,5 @@
 '''Test download.'''
+
 import os
 
 from proman_github import get_package_manager
