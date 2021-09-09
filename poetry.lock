@@ -23,7 +23,7 @@ python-versions = "*"
 
 [[package]]
 name = "argufy"
-version = "0.1.2a3"
+version = "0.1.2a4"
 description = "Inspection based parser based on argparse."
 category = "main"
 optional = false
@@ -1121,8 +1121,8 @@ appdirs = [
     {file = "appdirs-1.4.4.tar.gz", hash = "sha256:7d5d0167b2b1ba821647616af46a749d1c653740dd0d2415100fe26e27afdf41"},
 ]
 argufy = [
-    {file = "argufy-0.1.2a3-py3-none-any.whl", hash = "sha256:640c9b6afcf0a6314dc93a4abcef77b281dd622e0326bd4589ef41dd37cd40b4"},
-    {file = "argufy-0.1.2a3.tar.gz", hash = "sha256:4a1bdad92198d227ff59b3cb5d32f81441a990cbf29876647ea7becfee1a091e"},
+    {file = "argufy-0.1.2a4-py3-none-any.whl", hash = "sha256:91382a57f455a88287369126682102b5b6af84e3437316f1a12367d768a94553"},
+    {file = "argufy-0.1.2a4.tar.gz", hash = "sha256:4d9519a159a61061df642fe302f37d8bf7591af82efe68ea6695f57f2671c5ad"},
 ]
 astunparse = [
     {file = "astunparse-1.6.3-py2.py3-none-any.whl", hash = "sha256:c2652417f2c8b5bb325c885ae329bdf3f86424075c4fd1a128674bc6fba4b8e8"},

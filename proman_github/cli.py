@@ -82,15 +82,20 @@ def update(*packages: str, **options: Any) -> None:
 #         print('\n'.join(local_package.package_packages), file=sys.stdout)
 
 
-def search(query: str, sort: str = 'stars', order: str = 'desc') -> None:
-    '''Search PyPI for packages.'''
-    packages = package_manager.search(
-        query=query,
-        sort=sort,
-        order=order,
-    )
+def search(*query: str, **options: str) -> None:
+    '''Search PyPI for packages.
+
+    Parameters
+    ----------
+    query: str
+        Query(s) to search for projects.
+    sort: str, optional
+        Sort the results of query by either number of 'stars', 'forks',
+        or 'updated'.
+    order: str, optional
+        Order the result either 'asc' or 'desc'.
+
+    '''
+    packages = package_manager.search(query=' '.join(query), **options)
     for package in packages:
-        print(
-            package,
-            file=sys.stdout
-        )
+        print(package, file=sys.stdout)

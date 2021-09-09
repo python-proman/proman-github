@@ -154,7 +154,11 @@ class PackageManager(PackageManagerBase):
         # force = options.get('force', False)
 
         for package in list(packages):
-            filename = package.split('/')[1]
+            if '/' in package:
+                filename = package.split('/')[1]
+            else:
+                raise Exception('package requires both group and project')
+
             dependency = self._get_dependency(
                 package=package, version=version, dev=dev
             )
@@ -214,10 +218,10 @@ class PackageManager(PackageManagerBase):
 
     def search(self, query: str, **options: Any) -> 'PaginatedList':
         """Perform package search."""
-        sort = options.get('stars')
-        order = options.get('desc')
+        sort = options.pop('sort', None) or 'stars'
+        order = options.pop('order', None) or 'desc'
         result = self.__github.search_repositories(
-            query, sort, order, **options
+            query=query, sort=sort, order=order, **options
         )
         return result
 
