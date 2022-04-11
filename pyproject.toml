@@ -69,6 +69,13 @@ pattern = "__version__ == '${version}'"
 filepath = "pyproject.toml"
 pattern = "version = \"${version}\""
 
+[tool.pydocstyle]
+ignore = [
+    "D203",
+    "D213",
+    "D300"
+]
+
 [tool.isort]
 profile = "black"
 line_length = 79
