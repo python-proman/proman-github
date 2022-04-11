@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
-# license: MPL-2.0, see LICENSE for more details.
-'''Arguments for inspection based CLI parser.'''
+# license: LGPL-3.0, see LICENSE.md for more details.
+"""Arguments for inspection based CLI parser."""
 
 # import atexit
 import json
@@ -17,12 +16,12 @@ package_manager = get_package_manager()
 
 
 def config() -> None:
-    '''Manage distributions and global configuration.'''
+    """Manage distributions and global configuration."""
     pass
 
 
 def info(package: str, output: str = 'plain') -> None:
-    '''Get package info.'''
+    """Get package info."""
     info = package_manager.info(package, output)
     print(json.dumps(info, indent=2))
 
@@ -30,12 +29,12 @@ def info(package: str, output: str = 'plain') -> None:
 def download(
     package: str, dest: str = '.', version: str = 'latest'
 ) -> None:
-    '''Download packages.'''
+    """Download packages."""
     package_manager.download(package, dest, version=version)
 
 
 def install(*packages: str, **options: Any) -> None:
-    '''Install package and dependencies.
+    """Install package and dependencies.
 
     Parameters
     ----------
@@ -50,17 +49,17 @@ def install(*packages: str, **options: Any) -> None:
     platform: str
         restrict package to specific platform
 
-    '''
+    """
     package_manager.install(*packages, **options)
 
 
 def uninstall(*packages: str, **options: Any) -> None:
-    '''Uninstall packages.'''
+    """Uninstall packages."""
     package_manager.uninstall(*packages, **options)
 
 
 def update(*packages: str, **options: Any) -> None:
-    '''Install package and dependencies.
+    """Install package and dependencies.
 
     Parameters
     ----------
@@ -69,12 +68,12 @@ def update(*packages: str, **options: Any) -> None:
     force: bool
         force changes
 
-    '''
+    """
     package_manager.update(*packages, **options)
 
 
 # def list(versions: bool = True) -> None:
-#     '''List installed packages.'''
+#     """List installed packages."""
 #     if versions:
 #         for k in local_package.packages:
 #             print(k.package.ljust(25), k.version.ljust(15), file=sys.stdout)
@@ -83,7 +82,7 @@ def update(*packages: str, **options: Any) -> None:
 
 
 def search(*query: str, **options: str) -> None:
-    '''Search PyPI for packages.
+    """Search PyPI for packages.
 
     Parameters
     ----------
@@ -95,7 +94,7 @@ def search(*query: str, **options: str) -> None:
     order: str, optional
         Order the result either 'asc' or 'desc'.
 
-    '''
+    """
     packages = package_manager.search(query=' '.join(query), **options)
     for package in packages:
         print(package, file=sys.stdout)

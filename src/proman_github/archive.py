@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
-# license: MPL 2.0, see LICENSE for more details.
-'''Control Package Archives.'''
+# license: LGPL-3.0, see LICENSE.md for more details.
+"""Control Package Archives."""
 
 import gzip
 import mimetypes
@@ -12,10 +11,10 @@ import tarfile
 
 
 class Archive:
-    '''Manage artifact packaging.'''
+    """Manage artifact packaging."""
 
     def __init__(self) -> None:
-        '''Initialize archive.'''
+        """Initialize archive."""
         pass
 
     def _unpack_gzip(self, path: str) -> None:
@@ -26,11 +25,11 @@ class Archive:
         pass
 
     def pack(self, path: str) -> None:
-        '''Pack archive.'''
+        """Pack archive."""
         pass
 
     def unpack(self, path: str, dest: str = '.') -> None:
-        '''Unpack archive.'''
+        """Unpack archive."""
         mt = mimetypes.guess_type(path)
         if mt[0] == 'application/gzip':
             mode = 'r:gz'

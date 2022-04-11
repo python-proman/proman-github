@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
-# license: MPL-2.0, see LICENSE for more details.
-'''Resolve package dependencies.'''
+# license: LGPL-3.0, see LICENSE.md for more details.
+"""Resolve package dependencies."""
 
 import re
 from typing import Any, Dict, Tuple, TYPE_CHECKING
@@ -14,14 +13,14 @@ if TYPE_CHECKING:
 
 
 class Dependency(DependencyBase):
-    '''Manage dependency of a project.'''
+    """Manage dependency of a project."""
 
     def __init__(
         self,
         asset: 'GitReleaseAsset',
         **options: Any,
     ) -> None:
-        '''Initialize dependency.'''
+        """Initialize dependency."""
         self._asset = asset
         self.__version = options.get('version', 'latest')
         self.__dev = options.get('dev', False)
@@ -30,12 +29,12 @@ class Dependency(DependencyBase):
         self.__prerelease = options.get('prerelease', False)
 
     def __getattr__(self, attr: str) -> Any:
-        '''Provide proxy for distribution.'''
+        """Provide proxy for distribution."""
         return getattr(self._asset, attr)
 
     @staticmethod
     def __get_specifier(package: str) -> Tuple[str, str]:
-        '''Get package name and version.'''
+        """Get package name and version."""
         regex = '^([a-zA-Z0-9][a-zA-Z0-9._-]*)([<!~=>].*)$'
         package_info = [x for x in re.split(regex, package) if x != '']
         name = package_info[0]
@@ -47,20 +46,20 @@ class Dependency(DependencyBase):
 
     @property
     def name(self) -> str:
-        '''Get name.'''
+        """Get name."""
         return self._asset.name
 
     @property
     def version(self) -> str:
-        '''Get version.'''
+        """Get version."""
         return self.__version
 
     @property
     def digests(self) -> Tuple[Dict[str, str]]:
-        '''Get digests.'''
+        """Get digests."""
         return ({},)
 
     @property
     def url(self) -> str:
-        '''Get url.'''
+        """Get url."""
         return self._asset.url

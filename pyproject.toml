@@ -1,8 +1,29 @@
+[build-system]
+requires = ["poetry_core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry]
 name = "proman-github"
 version = "0.1.1-dev2"
 description = "GitHub based package manager."
 authors = ["Jesse P. Johnson <jpj6652@gmail.com>"]
+license = "LGPL-3.0"
+readme = "README.md"
+keywords = ["configuration management"]
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+packages = [
+    {include = "proman_github", from = "src"},
+]
 
 [tool.poetry.dependencies]
 python = "^3.6.2"
@@ -23,7 +44,6 @@ safety = "^1.9.0"
 mkdocs = "^1.2.2"
 mkdocs-material = "^7.2.0"
 mkdocstrings = "^0.15.2"
-bump2version = "^1.0.0"
 invoke = "^1.4.1"
 flit = "^3.1.0"
 mypy = "^0.910"
@@ -34,18 +54,20 @@ black = "^21.7b0"
 github = "proman_github:__main__.main"
 gh = "proman_github:__main__.main"
 
-[tool.flit.metadata]
-module = "proman_github"
-author = "Jesse P. Johnson"
-author-email = "jpj6652@gmail.com"
-home-page = "https://github.com/python-proman/proman-github"
-requires = []
+[tool.proman.versioning]
+enable_devreleases = false
 
-classifiers = ["License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)"]
+[[tool.proman.versioning.files]]
+filepath = "src/proman_github/__init__.py"
+pattern = "__version__ = '${version}'"
 
-[tool.flit.scripts]
-github = "proman_github:__main__.main"
-gh = "proman_github:__main__.main"
+[[tool.proman.versioning.files]]
+filepath = "tests/test_version.py"
+pattern = "__version__ == '${version}'"
+
+[[tool.proman.versioning.files]]
+filepath = "pyproject.toml"
+pattern = "version = \"${version}\""
 
 [tool.isort]
 profile = "black"

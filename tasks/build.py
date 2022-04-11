@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
-# license: Apache 2.0, see LICENSE for more details.
+# license: Apache 2.0, see LICENSE.md for more details.
 '''Test Task-Runner.'''
 
 from typing import Optional, TYPE_CHECKING

@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
-# license: MPL-2.0, see LICENSE for more details.
-'''GitHub based package manager.'''
+# license: LGPL-3.0, see LICENSE.md for more details.
+"""GitHub based package manager."""
 
 import logging
 import os
@@ -23,7 +22,7 @@ from .package_manager import PackageManager
 __author__ = 'Jesse P. Johnson'
 __title__ = 'proman-github'
 __version__ = '0.1.1-dev2'
-__license__ = 'MPL-2.0'
+__license__ = 'LGPL-3.0'
 
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
@@ -31,18 +30,18 @@ logging.getLogger(__name__).addHandler(logging.NullHandler())
 def get_package_manager(
     token: Optional[str] = os.getenv('GITHUB_TOKEN')
 ) -> PackageManager:
-    '''Get package manager instance.'''
+    """Get package manager instance."""
     # Load configuration files
     project_paths = ProjectPaths()
-    source_tree_file = None
+    specfile = None
     lockfile = None
 
     if os.path.exists(project_paths.pyproject_path):
-        source_tree_cfg = Config(
+        spec_cfg = Config(
             filepath=project_paths.pyproject_path, writable=True
         )
-        source_tree_file = SourceTreeFile(
-            source_tree_cfg, basepath='.tool.proman.github'
+        specfile = SourceTreeFile(
+            spec_cfg, basepath='.tool.proman.github'
         )
 
         if os.path.exists(project_paths.lock_path):
@@ -54,9 +53,9 @@ def get_package_manager(
         print('log no source tree')
 
     manifest: Optional[Manifest] = None
-    if source_tree_file and lockfile:
+    if specfile and lockfile:
         manifest = Manifest(
-            source_tree=source_tree_file,
+            specfile=specfile,
             lockfile=lockfile,
             dependency_class={
                 'module': 'proman_github.dependency',

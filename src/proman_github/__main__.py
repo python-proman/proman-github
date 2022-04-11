@@ -1,7 +1,6 @@
-# -*- coding: utf-8 -*-
 # copyright: (c) 2020 by Jesse Johnson.
-# license: MPL-2.0, see LICENSE for more details.
-'''Simple package manager for GitHub releases.'''
+# license: LGPL-3.0, see LICENSE.md for more details.
+"""Simple package manager for GitHub releases."""
 
 from argufy import Parser, __version__
 
@@ -9,7 +8,7 @@ from . import cli
 
 
 def main() -> None:
-    '''Proide main function for CLI.'''
+    """Proide main function for CLI."""
     parser = Parser(
         version=__version__,
         # use_module_args=True,
